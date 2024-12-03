@@ -1,4 +1,5 @@
 import axios from "axios";
+import apiClient from "./apiClient";
 export const REMOTE_SERVER = process.env.REACT_APP_REMOTE_SERVER;
 export const USERS_API = `${REMOTE_SERVER}/api/users`;
 const axios_api = axios.create();
@@ -30,7 +31,8 @@ export const getProfile = async (id: any) => {
 };
 
 export const signup = async (user: any) => {
-    const response = await axios_api.post(`${USERS_API}/signup`, user);
+    console.log("user, USERS_API", user, USERS_API);
+    const response = await apiClient.post(`${USERS_API}/signup`, user);
     console.log(response.data);
     return response.data;
 };

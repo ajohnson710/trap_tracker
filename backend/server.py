@@ -1,18 +1,16 @@
 # Filename - server.py
 
 from flask import Flask
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from flask import Flask, request, jsonify, make_response, json
 from api import API
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 import logging
-import re
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # Enter your database credentials here
 api = API("localhost", "root", "penguin1", "trap_tracker")
-
 logging.getLogger('flask_cors').level = logging.DEBUG
 
 def cors_response(method_array):
@@ -41,13 +39,14 @@ def signup():
             return jsonify({'message': 'User added successfully', 'user': user_json})
         else:
             print('User not added')
-            return jsonify({'message': 'User not added', 'user': data})
+            return jsonify({'message': 'User not added, username taken', 'user': data})
     
 @app.route('/api/users/signin', methods=['POST', 'OPTIONS'])
 def signin():
     if request.method == 'OPTIONS':
         return cors_response(['POST', 'OPTIONS'])
     elif request.method == 'POST':
+        print(request)
         data = request.get_json()
         user = api.get_user(data['username'], data['password'])
         if user:
@@ -140,4 +139,4 @@ def update_trap():
     
 # Running app
 if __name__ == '__main__':
-    app.run(debug=True, port=4000)
+    app.run(debug=True, port=4000, ssl_context=('cert.pem', 'key.pem'))

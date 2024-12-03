@@ -44,7 +44,9 @@ class API:
         try :
             mycursor.callproc('AddAccountCredentials', [username, password])
             self.mydb.commit()
-            return mycursor.lastrowid
+            mycursor.execute("SELECT MAX(id) FROM tt_account")
+            last_id = mycursor.fetchall()[0][0]
+            return last_id
         except:
             return None
     
