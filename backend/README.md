@@ -27,7 +27,7 @@ Navigate to the project directory where the program files are located.
 
 Run the following command to create a virtual environment:
 
-python3 -m venv env
+python3 -m venv .venv
 
 This creates a virtual environment named env in the current directory.
 
@@ -35,11 +35,11 @@ Activate the virtual environment:
 
 On Windows:
 
-.\env\Scripts\activate
+.\.venv\Scripts\activate
 
 On macOS/Linux:
 
-source env/bin/activate
+source .venv/bin/activate
 
 When activated, your terminal prompt should include (env).
 
@@ -47,7 +47,7 @@ When activated, your terminal prompt should include (env).
 
 The dependencies required for this project are listed below. You can install them all using pip:
 
-pip install flask, flask_cors, mysql-connector-python
+pip install flask, flask_cors, mysql-connector-python, dot-env
 
 
 # Step 3: Verify Installation
