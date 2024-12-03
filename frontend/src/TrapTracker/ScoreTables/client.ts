@@ -1,11 +1,10 @@
-import axios from "axios";
-export const REMOTE_SERVER = process.env.REACT_APP_REMOTE_SERVER;
+import apiClient from "./apiClient";
+export const REMOTE_SERVER = apiClient.defaults.baseURL;
 export const GAMES_API = `${REMOTE_SERVER}/api/games`;
-const axios_api = axios.create();
 
 export const get_trap_games = async (user: any) => {
     console.log("user", user);
-    const response = await axios_api.post(`${GAMES_API}/trap`, user);
+    const response = await apiClient.post(`${GAMES_API}/trap`, user);
     console.log("response.data", response.data.games);
     const games_list = response.data.games;
     const games_json_list = games_list.map((game: any) => {
@@ -31,7 +30,7 @@ export const add_trap_game = async (game: any) => {
     console.log("game", game);
     // Make sure data is correct before sending to server
     game.score = game.station1 + game.station2 + game.station3 + game.station4 + game.station5;
-    const response = await axios_api.post(`${GAMES_API}/trap/add`, { game: game });
+    const response = await apiClient.post(`${GAMES_API}/trap/add`, { game: game });
     console.log("response.data", response.data);
     return response.data;
 };
@@ -41,19 +40,19 @@ export const update_trap_game = async (game: any, gameid: any) => {
     game.score = game.station1 + game.station2 + game.station3 + game.station4 + game.station5;
     console.log("game", game);
     console.log("gameid", gameid);
-    const response = await axios_api.put(`${GAMES_API}/trap/update`, { game: game, id: gameid });
+    const response = await apiClient.put(`${GAMES_API}/trap/update`, { game: game, id: gameid });
     console.log("response.data", response.data);
     return response.data;
 };
 
 export const delete_trap_game = async (id: any) => {
-    const response = await axios_api.post(`${GAMES_API}/trap/delete`, { id: id });
+    const response = await apiClient.post(`${GAMES_API}/trap/delete`, { id: id });
     console.log("response.data", response.data);
     return response.data;
 };
 
 export const get_game = async (id: any) => {
-    const response = await axios_api.post(`${GAMES_API}/trap/game`, { id: id });
+    const response = await apiClient.post(`${GAMES_API}/trap/game`, { id: id });
     console.log("response.data", response.data.game);
     if (response.data.message === "Game not found") {
         alert("game not found, please enter valid credentials");
